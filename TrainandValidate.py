@@ -11,21 +11,23 @@ import pandas as pd
 import yfinance as yf
 #Data viz
 #import plotly.graph_objs as go
-
+market = yf.download(tickers='RHM.DE', period='20y', interval='1h') 
 #Interval required 5 minutes
-market = yf.download(tickers='RWE.DE', period='10y', interval='1d') #gamestop aktie
-
+stocks = ['DPW.DE','RWE.DE','BAS.DE','SIE.DE','LMT','EONGY','UBER','MBG.DE','NVDA','F','CVAC','NTDOY','A','AMZN','AAPL']
+for stock in stocks:
+    market_temp = yf.download(tickers=stock, period='20y', interval='1d') 
+    market = market.append(market_temp)
 #delete all rows with Nan values
 market.drop(market.index[market['Open'].isnull()], inplace=True) 
 #Print data
 print(market)
 
 week = []
-for i in range(int(len(market)/5)):
-    for k in range(5):
+for i in range(int(len(market)/120)):
+    for k in range(120):
         week.append(i+1)
         
-for k in range(len(market)%5):
+for k in range(len(market)%120):
     week.append(i+2)
     
 market.index = week
